@@ -154,3 +154,7 @@ main {
 .task .actions .delete {
 	color: crimson;
 }
+
+.time-input{
+	color: white;
+}

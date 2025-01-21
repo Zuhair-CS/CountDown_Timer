@@ -8,17 +8,14 @@ window.addEventListener('load', () => {
 
 		const task = input.value;
 
-		// Create the task container
-		const task_el = document.createElement('div');
+ 		const task_el = document.createElement('div');
 		task_el.classList.add('task');
 
-		// Create the content container
-		const task_content_el = document.createElement('div');
+ 		const task_content_el = document.createElement('div');
 		task_content_el.classList.add('content');
 		task_el.appendChild(task_content_el);
 
-		// Create input fields for task description, hours, minutes, seconds
-		const task_desc_el = document.createElement('input');
+ 		const task_desc_el = document.createElement('input');
 		task_desc_el.classList.add('text');
 		task_desc_el.type = 'text';
 		task_desc_el.value = task;
@@ -29,14 +26,13 @@ window.addEventListener('load', () => {
 			const time_input = document.createElement('input');
 			time_input.classList.add('time-input');
 			time_input.type = 'number';
-			time_input.value = type === 'minutes' ? '2' : '0'; // Default to 2 for minutes as an example
+			time_input.value = type === 'minutes' ? '2' : '0'; 
 			time_input.min = 0;
 			time_input.placeholder = type.charAt(0).toUpperCase() + type.slice(1);
 			time_input.setAttribute('readonly', 'readonly');
 			task_content_el.appendChild(time_input);
 		});
 
-		// Create action buttons (Edit, Delete)
 		const task_actions_el = document.createElement('div');
 		task_actions_el.classList.add('actions');
 
@@ -53,11 +49,9 @@ window.addEventListener('load', () => {
 		task_el.appendChild(task_actions_el);
 		list_el.appendChild(task_el);
 
-		// Clear the input field
-		input.value = '';
+ 		input.value = '';
 
-		// Edit button functionality
-		task_edit_el.addEventListener('click', () => {
+ 		task_edit_el.addEventListener('click', () => {
 			if (task_edit_el.innerText.toLowerCase() === "edit") {
 				task_edit_el.innerText = "Save";
 				[task_desc_el, ...task_content_el.querySelectorAll('.time-input')].forEach(input => input.removeAttribute("readonly"));
@@ -67,7 +61,6 @@ window.addEventListener('load', () => {
 			}
 		});
 
-		// Delete button functionality
 		task_delete_el.addEventListener('click', () => {
 			list_el.removeChild(task_el);
 		});
