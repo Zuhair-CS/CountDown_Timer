@@ -1,8 +1,8 @@
 const semicircles = document.querySelectorAll('.semicircle');
 const timer = document.querySelector('.timer');
-const hr = 0;
-const min = 1;
-const sec = 0;
+const hr =  localStorage.getItem('hours');;
+const min = localStorage.getItem('minutes');
+const sec =  localStorage.getItem('seconds');
 
 
 const hours = hr * 3600000;
@@ -15,6 +15,8 @@ const futureTime = startTime + setTime;
 const timerLoop = setInterval(countDownTimer);
 countDownTimer();
 
+
+console.log(`hours : ${hours_inp}, Minutes:${minutes_inp} , Seconds: ${seconds_inp}`);
 function countDownTimer(){
     const currentTime = Date.now();
     const remainingTime = futureTime - currentTime;
