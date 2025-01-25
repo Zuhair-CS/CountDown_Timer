@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head	<meta charset="UTF-8">
+<head>
+	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Task List 2021</title>
@@ -8,16 +9,15 @@
 	<link rel="stylesheet" href="task_style.css" />
 </head>
 <body>
-	
+	<div class="cursor"></div>
 	<header>
 		<div class="clock">
 			<div class="border_items">
-				<input type="number" class = "inp inp-hours" placeholder="00">
-				<input type="number" class = "inp inp-minutes" placeholder="00">
-				<input type="number" class = "inp inp-seconds" placeholder="00">
+				<input type="number" class="inp inp-hours" placeholder="00">
+				<input type="number" class="inp inp-minutes" placeholder="00">
+				<input type="number" class="inp inp-seconds" placeholder="00">
 				<div class="material-symbols-outlined" id="play_btn" onclick="RedirectToPage()">play_circle</div>
 			</div>
-
 		</div>
 		<h1>Add Preset Timer</h1>
 		<form id="new-task-form">
@@ -25,27 +25,27 @@
 				type="text" 
 				name="new-task-input" 
 				id="new-task-input"
-				class = "task-content"
+				class="task-content"
 				placeholder="Task description" />
 			<input 
 				type="number" 
 				name="task-hours" 
 				id="task-hours" 
-				class = "task-content"
+				class="task-content"
 				placeholder="Hours" 
 				min="0" />
 			<input 
 				type="number" 
 				name="task-minutes" 
 				id="task-minutes" 
-				class = "task-content"
+				class="task-content"
 				placeholder="Minutes" 
 				min="0" />
 			<input 
 				type="number" 
 				name="task-seconds" 
 				id="task-seconds" 
-				class = "task-content"
+				class="task-content"
 				placeholder="Seconds" 
 				min="0" />
 			<input 
@@ -53,100 +53,11 @@
 				id="new-task-submit" 
 				value="Add task" />
 		</form>
-		
 	</header>
 	<main>
 		<section class="task-list">
 			<h2>Preset Timers</h2>
-
-			<div id="tasks">
-
-				<div class="task">
-					<div class="content">
-						<input 
-							type="text" 
-							class="text" 
-							value="Brushing" 
-							readonly>
-						<input 
-							type="number" 
-							class="time-input" 
-							value="0" 
-							readonly>
-						<input 
-							type="number" 
-							class="time-input" 
-							value="2" 
-							readonly>
-						<input 
-							type="number" 
-							class="time-input" 
-							value="0" 
-							readonly>
-					</div>
-					<div class="actions">
-						<button class="edit">Edit</button>
-						<button class="delete">Delete</button>
-					</div>
-				</div>
-				<div class="task">
-					<div class="content">
-						<input 
-							type="text" 
-							class="text" 
-							value="Boil Eggs" 
-							readonly>
-						<input 
-							type="number" 
-							class="time-input" 
-							value="0" 
-							readonly>
-						<input 
-							type="number" 
-							class="time-input" 
-							value="10" 
-							readonly>
-						<input 
-							type="number" 
-							class="time-input" 
-							value="0" 
-							readonly>
-					</div>
-					<div class="actions">
-						<button class="edit">Edit</button>
-						<button class="delete">Delete</button>
-					</div>
-				</div>
-				<div class="task">
-					<div class="content">
-						<input 
-							type="text" 
-							class="text" 
-							value="Power Nap" 
-							readonly>
-						<input 
-							type="number" 
-							class="time-input" 
-							value="0" 
-							readonly>
-						<input 
-							type="number" 
-							class="time-input" 
-							value="30" 
-							readonly>
-						<input 
-							type="number" 
-							class="time-input" 
-							value="0" 
-							readonly>
-					</div>
-					<div class="actions">
-						<button class="edit">Edit</button>
-						<button class="delete">Delete</button>
-					</div>
-				</div>
-
-			</div>
+			<div id="tasks"></div>
 		</section>
 	</main>
 

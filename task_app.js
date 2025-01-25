@@ -6,73 +6,30 @@ window.addEventListener('load', () => {
 	const secondsInput = document.querySelector("#task-seconds");
 	const list_el = document.querySelector("#tasks");
 
-	// Function to handle clicking on tasks
-	const attachTaskClickListeners = (task) => {
-		task.addEventListener('click', (e) => {
-			// Prevent interaction when editing
-			if (task.querySelector(".edit")?.innerText.toLowerCase() === "save") {
-				return;
-			}
-
-			const hours = task.querySelectorAll('.time-input')[0].value;
-			const minutes = task.querySelectorAll('.time-input')[1].value;
-			const seconds = task.querySelectorAll('.time-input')[2].value;
-
-			const hrs = document.querySelector('.inp-hours');
-			const mins = document.querySelector('.inp-minutes');
-			const secs = document.querySelector('.inp-seconds');
-
-			hrs.value = hours;
-			mins.value = minutes;
-			secs.value = seconds;
-		});
-	};
-
-	// Attach Edit and Delete functionality
-	const attachActionListeners = (task) => {
-		const editButton = task.querySelector(".edit");
-		const deleteButton = task.querySelector(".delete");
-		const task_desc_el = task.querySelector('.text');
-		const time_inputs = task.querySelectorAll('.time-input');
-
-		// Edit button functionality
-		editButton?.addEventListener('click', () => {
-			if (editButton.innerText.toLowerCase() === "edit") {
-				editButton.innerText = "Save";
-				[task_desc_el, ...time_inputs].forEach(input => input.removeAttribute("readonly"));
-			} else {
-				editButton.innerText = "Edit";
-				[task_desc_el, ...time_inputs].forEach(input => input.setAttribute("readonly", "readonly"));
-			}
-		});
-
-		// Delete button functionality
-		deleteButton?.addEventListener('click', () => {
-			list_el.removeChild(task);
-		});
-	};
-
-	// Attach listeners to pre-existing tasks in the HTML
-	document.querySelectorAll('.task').forEach((task) => {
-		attachTaskClickListeners(task);
-		attachActionListeners(task);
+	document.addEventListener('mousemove', e=>{
+		const cursor = document.querySelector('.cursor');
+		cursor.style.left = e.pageX + 'px';
+		cursor.style.top = e.pageY + 'px';
 	});
+	// Load cached tasks from localStorage
+	const loadCachedTasks = () => {
+		const cachedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+		cachedTasks.forEach(task => renderTask(task.description, task.hours, task.minutes, task.seconds));
+	};
 
-	form.addEventListener('submit', (e) => {
-		e.preventDefault();
+	// Save tasks to localStorage
+	const saveTasksToCache = () => {
+		const tasks = Array.from(document.querySelectorAll('.task')).map(task => ({
+			description: task.querySelector('.text').value,
+			hours: task.querySelectorAll('.time-input')[0].value,
+			minutes: task.querySelectorAll('.time-input')[1].value,
+			seconds: task.querySelectorAll('.time-input')[2].value,
+		}));
+		localStorage.setItem('tasks', JSON.stringify(tasks));
+	};
 
-		// Get values from the form
-		const task = input.value;
-		const hours = hoursInput.value || "0";
-		const minutes = minutesInput.value || "0";
-		const seconds = secondsInput.value || "0";
-
-		// Validate input
-		if (!task.trim()) {
-			alert("Task description cannot be empty!");
-			return;
-		}
-
+	// Render a task on the page
+	const renderTask = (description, hours, minutes, seconds) => {
 		// Create the task container
 		const task_el = document.createElement('div');
 		task_el.classList.add('task');
@@ -86,7 +43,7 @@ window.addEventListener('load', () => {
 		const task_desc_el = document.createElement('input');
 		task_desc_el.classList.add('text');
 		task_desc_el.type = 'text';
-		task_desc_el.value = task;
+		task_desc_el.value = description;
 		task_desc_el.setAttribute('readonly', 'readonly');
 		task_content_el.appendChild(task_desc_el);
 
@@ -99,7 +56,6 @@ window.addEventListener('load', () => {
 			time_input.setAttribute('readonly', 'readonly');
 			task_content_el.appendChild(time_input);
 		});
-
 
 		// Create action buttons (Edit, Delete)
 		const task_actions_el = document.createElement('div');
@@ -122,24 +78,82 @@ window.addEventListener('load', () => {
 		attachTaskClickListeners(task_el);
 		attachActionListeners(task_el);
 
-		// Clear the input fields
+		saveTasksToCache(); // Save tasks after rendering
+	};
+
+	// Redirects to Timer.html and stores current timer values in localStorage
+	window.RedirectToPage = function () {
+		const hours = document.querySelector('.inp-hours').value;
+		const minutes = document.querySelector('.inp-minutes').value;
+		const seconds = document.querySelector('.inp-seconds').value;
+
+		// Store values in localStorage
+		localStorage.setItem('hours', hours);
+		localStorage.setItem('minutes', minutes);
+		localStorage.setItem('seconds', seconds);
+		window.location.href = "Timer.html";
+	};
+
+	// Attach event listeners for a task
+	const attachTaskClickListeners = (task) => {
+		task.addEventListener('click', () => {
+			if (task.querySelector(".edit")?.innerText.toLowerCase() === "save") return;
+
+			const hours = task.querySelectorAll('.time-input')[0].value;
+			const minutes = task.querySelectorAll('.time-input')[1].value;
+			const seconds = task.querySelectorAll('.time-input')[2].value;
+
+			document.querySelector('.inp-hours').value = hours;
+			document.querySelector('.inp-minutes').value = minutes;
+			document.querySelector('.inp-seconds').value = seconds;
+		});
+	};
+
+	// Attach edit and delete functionality to a task
+	const attachActionListeners = (task) => {
+		const editButton = task.querySelector(".edit");
+		const deleteButton = task.querySelector(".delete");
+		const task_desc_el = task.querySelector('.text');
+		const time_inputs = task.querySelectorAll('.time-input');
+
+		editButton?.addEventListener('click', () => {
+			if (editButton.innerText.toLowerCase() === "edit") {
+				editButton.innerText = "Save";
+				[task_desc_el, ...time_inputs].forEach(input => input.removeAttribute("readonly"));
+			} else {
+				editButton.innerText = "Edit";
+				[task_desc_el, ...time_inputs].forEach(input => input.setAttribute("readonly", "readonly"));
+				saveTasksToCache(); // Save tasks when editing is done
+			}
+		});
+
+		deleteButton?.addEventListener('click', () => {
+			list_el.removeChild(task);
+			saveTasksToCache(); // Save tasks after deletion
+		});
+	};
+
+	// Form submission to add a new task
+	form.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const task = input.value.trim();
+		const hours = hoursInput.value || "0";
+		const minutes = minutesInput.value || "0";
+		const seconds = secondsInput.value || "0";
+
+		if (!task) {
+			alert("Task description cannot be empty!");
+			return;
+		}
+
+		renderTask(task, hours, minutes, seconds);
+
 		input.value = '';
 		hoursInput.value = '';
 		minutesInput.value = '';
 		secondsInput.value = '';
-
-
 	});
+
+	// Load cached tasks on page load
+	loadCachedTasks();
 });
-
-function RedirectToPage(){
-	const hours = document.querySelector('.inp-hours').value;
-	const minutes = document.querySelector('.inp-minutes').value;
-	const seconds = document.querySelector('.inp-seconds').value;
-
-	// Store values in localStorage
-	localStorage.setItem('hours', hours);
-	localStorage.setItem('minutes', minutes);
-	localStorage.setItem('seconds', seconds);
-	window.location.href = "Timer.html";
-}

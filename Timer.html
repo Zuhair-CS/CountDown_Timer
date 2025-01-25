@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>CountDown Timer</title>
+    <title>Countdown Timer</title>
     <link rel="stylesheet" href="timer_style.css">
 </head>
 <body>
+    <div class="cursor"></div>
     <div class="main-container center">
         <!-- Progress indicator -->
         <div class="circle-container center">
             <div class="semicircle"></div>
             <div class="semicircle"></div>
             <div class="semicircle"></div>
-            <div class="outermost-circle"></div>
+            <div class="outermost-circle" onclick="startTimer()"></div>
         </div>
 
-        <!-- Timer -->
-        <div class="timer-container center">
-            <div class="timer center"></div>
+        <!-- Timer Display -->
+        <div class="timer-container center" onclick="startTimer()">
+            <div class="timer center" ></div>
         </div>
+
+        <!-- Control Buttons -->
+
     </div>
-    <button class = "lap">LAP</button>
+    <div class="buttons center">
+        <button class="btn start">Start</button>
+        <button class="btn pause" disabled>Pause</button>
+        <button class="btn lap" disabled>Lap</button>
+        <button class="btn reset" disabled>Reset</button>
+    </div>
+    <ul class="lap-times"></ul>
 
     <script src="timer_app.js"></script>
 </body>
