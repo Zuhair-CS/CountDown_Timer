@@ -6,6 +6,11 @@ window.addEventListener('load', () => {
 	const secondsInput = document.querySelector("#task-seconds");
 	const list_el = document.querySelector("#tasks");
 
+	document.addEventListener('mousemove', e=>{
+		const cursor = document.querySelector('.cursor');
+		cursor.style.left = e.pageX + 'px';
+		cursor.style.top = e.pageY + 'px';
+	});
 	// Load cached tasks from localStorage
 	const loadCachedTasks = () => {
 		const cachedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
