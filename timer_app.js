@@ -67,13 +67,12 @@ function resetTimer() {
     clearInterval(timerLoop);
     running = false;
     remainingTime = setTime;
-    semicircles[1].style.display = "none";
-    semicircles[0].style.display = "none";
-    // Reset circular progress
+
+    // Reset semicircles
     semicircles.forEach((semicircle) => {
-        // semicircle.style.display = '';
-        semicircle.style.transform = 'rotate(0deg)';
-        semicircle.style.backgroundColor = 'white';
+        semicircle.style.display = 'none'; // Ensure all semicircles are visible
+        semicircle.style.transform = 'rotate(0deg)'; // Reset rotation
+        semicircle.style.backgroundColor = 'white'; // Restore color
     });
 
     // Reset timer display
@@ -98,13 +97,14 @@ function countDownTimer() {
 
     // Update Circular Progress
     if (angle > 180) {
-        semicircles[2].style.display = 'none';
+        semicircles[2].style.display = 'none'; // Hide the left semicircle
         semicircles[0].style.transform = "rotate(180deg)";
         semicircles[1].style.transform = `rotate(${angle}deg)`;
     } else {
-        semicircles[2].style.display = 'block';
+        semicircles[2].style.display = 'block'; // Show the left semicircle
         semicircles[0].style.transform = `rotate(${angle}deg)`;
         semicircles[1].style.transform = `rotate(${angle}deg)`;
+        semicircles[2].style.backgroundColor = "#374151"
     }
 
     // Update Timer Display
@@ -113,7 +113,7 @@ function countDownTimer() {
     // Stop Timer at 0
     if (remainingTime <= 0) {
         clearInterval(timerLoop);
-        semicircles.forEach(semicircle => semicircle.style.display = 'none');
+        semicircles.forEach((semicircle) => (semicircle.style.display = 'none'));
         timer.innerHTML = "00:00:00";
         startButton.textContent = "Start";
         pauseButton.disabled = true;
@@ -122,7 +122,6 @@ function countDownTimer() {
         running = false;
     }
 }
-
 // Format Time as HH:MM:SS
 function formatTime(time) {
     const hrs = Math.floor((time / (1000 * 60 * 60)) % 24).toLocaleString('en-US', { minimumIntegerDigits: 2 });
